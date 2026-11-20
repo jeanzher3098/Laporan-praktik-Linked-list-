@@ -1,0 +1,163 @@
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class LinkedList {
+private:
+    Node* head;
+
+public:
+    LinkedList() {
+        head = NULL;
+    }
+
+    // Menambahkan data di awal
+    void sisipAwal(int nilai) {
+        Node* baru = new Node;
+        baru->data = nilai;
+        baru->next = head;
+        head = baru;
+
+        cout << nilai << " berhasil ditambahkan di awal.\n";
+    }
+
+    // Menambahkan data di akhir
+    void sisipAkhir(int nilai) {
+        Node* baru = new Node;
+        baru->data = nilai;
+        baru->next = NULL;
+
+        if (head == NULL) {
+            head = baru;
+        } else {
+            Node* bantu = head;
+
+            while (bantu->next != NULL) {
+                bantu = bantu->next;
+            }
+
+            bantu->next = baru;
+        }
+
+        cout << nilai << " berhasil ditambahkan di akhir.\n";
+    }
+
+    // Menghapus data berdasarkan nilai
+    void hapus(int nilai) {
+        if (head == NULL) {
+            cout << "Linked List kosong!\n";
+            return;
+        }
+
+        if (head->data == nilai) {
+            Node* hapusNode = head;
+            head = head->next;
+            delete hapusNode;
+
+            cout << nilai << " berhasil dihapus.\n";
+            return;
+        }
+
+        Node* bantu = head;
+
+        while (bantu->next != NULL &&
+               bantu->next->data != nilai) {
+            bantu = bantu->next;
+        }
+
+        if (bantu->next == NULL) {
+            cout << "Data tidak ditemukan.\n";
+        } else {
+            Node* hapusNode = bantu->next;
+            bantu->next = hapusNode->next;
+            delete hapusNode;
+
+            cout << nilai << " berhasil dihapus.\n";
+        }
+    }
+
+    // Menampilkan seluruh data
+    void traversal() {
+        if (head == NULL) {
+            cout << "Linked List kosong!\n";
+            return;
+        }
+
+        Node* bantu = head;
+
+        cout << "Isi Linked List: ";
+
+        while (bantu != NULL) {
+            cout << bantu->data << " -> ";
+            bantu = bantu->next;
+        }
+
+        cout << "NULL\n";
+    }
+
+    // Destructor untuk membebaskan memori
+    ~LinkedList() {
+        Node* bantu;
+
+        while (head != NULL) {
+            bantu = head;
+            head = head->next;
+            delete bantu;
+        }
+    }
+};
+
+int main() {
+    LinkedList list;
+    int pilihan, nilai;
+
+    do {
+        cout << "\n=== PROGRAM LINKED LIST ===\n";
+        cout << "1. Sisip Awal\n";
+        cout << "2. Sisip Akhir\n";
+        cout << "3. Hapus Data\n";
+        cout << "4. Traversal\n";
+        cout << "0. Keluar\n";
+        cout << "Pilihan: ";
+        cin >> pilihan;
+
+        switch (pilihan) {
+            case 1:
+                cout << "Masukkan nilai: ";
+                cin >> nilai;
+                list.sisipAwal(nilai);
+                break;
+
+            case 2:
+                cout << "Masukkan nilai: ";
+                cin >> nilai;
+                list.sisipAkhir(nilai);
+                break;
+
+            case 3:
+                cout << "Masukkan nilai yang dihapus: ";
+                cin >> nilai;
+                list.hapus(nilai);
+                break;
+
+            case 4:
+                list.traversal();
+                break;
+
+            case 0:
+                cout << "Program selesai.\n";
+                break;
+
+            default:
+                cout << "Pilihan tidak valid!\n";
+        }
+
+    } while (pilihan != 0);
+
+    return 0;
+}
